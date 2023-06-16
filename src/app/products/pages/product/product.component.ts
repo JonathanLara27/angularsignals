@@ -11,10 +11,11 @@ import { CommonModule } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 
+
+
 @Component({
   selector: 'products-product-page',
   templateUrl: './product.component.html',
-  styleUrls: ['./product.component.css'],
   standalone: true,
   imports: [
     CommonModule,
@@ -63,28 +64,25 @@ export class ProductComponent {
   private temporalProduct!: Product;
   
   public addProducts(){
-    this.products.update(products => [...products, {name: 'New Product', price: 0, readonly: true, edit: true,}]);
-    this._snackBarService.showSuccess('Producto agregado existosamente.')
+    this.products.set([...this.products(), {name: 'New Product', price: 0, readonly: true, edit: true,}]);
+    this._snackBarService.showSuccess('Producto agregado existosamente.');
   }
   public deleteProduct(index: number) {
-    this.products.update(products => products.filter((_, i) => i !== index));
-    this._snackBarService.showSuccess('Producto eliminado existosamente.')
+    this.products().splice(index,1)
+    this._snackBarService.showSuccess('Producto eliminado existosamente.');
   }
 
   public changeToEdit(product: Product, index: number){
     this.temporalProduct={...product};
     this.products()[index].readonly=!this.products()[index].readonly;
-    this.products.update(products => products.map((product, i) => {
-      if(i !== index){
-        product.edit=false;
-      }
-      return product;
-    }));
+    this.products.mutate( product =>product[0].edit=true);
   }
 
   public cancelEdition(index: number){
-    this.products()[index]=this.temporalProduct;
-    this.products()[index].readonly=true;
+    this.products.mutate( product => {
+      product[index]=this.temporalProduct;
+      product[index].readonly=true;
+    })
     this.setEditProducts();
   }
 
@@ -93,7 +91,7 @@ export class ProductComponent {
     product.readonly = !product.readonly;
     if (product.name.length <= 3) {
       this._snackBarService.showError('Asigna un nombre con más de 3 caracteres.');
-      this.products()[index] = this.temporalProduct;
+      this.products.mutate( product =>product[index]=this.temporalProduct);
     } else if (product.price <= 0) {
       this._snackBarService.showError('Asigna un precio mayor a 0.');
       this.products()[index] = this.temporalProduct;

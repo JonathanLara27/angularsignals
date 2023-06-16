@@ -4,9 +4,6 @@ import { RickMortyRoutingModule } from './rick-morty-routing.module';
 
 
 @NgModule({
-  declarations: [
-
-  ],
   imports: [
     RickMortyRoutingModule,
   ],

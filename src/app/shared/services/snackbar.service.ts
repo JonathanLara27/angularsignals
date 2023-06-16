@@ -8,18 +8,9 @@ export class SnackbarService {
 
   public showError(message: string): void {
     this.snackbarRef = this.snackBar.open(message, ' ', { duration: 5000, panelClass: ['snackbar-error'] });
-    this.snackbarRef.afterDismissed().subscribe(() => {
-      this.snackbarRef = null;
-    });
   }
 
   public showSuccess(message: string): void {
     this.snackbarRef = this.snackBar.open(message, ' ', { duration: 10000, panelClass: ['snackbar-success'] });
-    this.snackbarRef.afterDismissed().subscribe(() => {
-      this.snackbarRef = null;
-    });
-  }
-  public isSnackbarVisible(): boolean {
-    return !!this.snackbarRef;
   }
 }

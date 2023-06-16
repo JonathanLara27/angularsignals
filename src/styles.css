@@ -1,0 +1,70 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.container {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  
+  /* Media queries para ajustar el ancho del container en diferentes tamaños de pantalla */
+  
+  @media (min-width: 576px) {
+    .container {
+      max-width: 540px;
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .container {
+      max-width: 720px;
+    }
+  }
+  
+  @media (min-width: 992px) {
+    .container {
+      max-width: 960px;
+    }
+  }
+  
+  @media (min-width: 1200px) {
+    .container {
+      max-width: 1140px;
+    }
+  }
+
+.border-radius10 {
+    border-radius: 10px !important;
+}
+.snackbar-success div{
+  background-color: #35a025 !important;
+  border-radius: 20px !important;
+  text-align: center;
+}
+
+.snackbar-success button::before{
+  background-color: #35a025 !important;
+  color:white !important;
+  font-size: 22px;
+  font-family: "Material Icons";
+  content: "\e5cd";
+}
+
+.snackbar-error div{
+  background-color: #e44648 !important;
+  color:white !important;
+  border-radius: 20px !important;
+  text-align: center;
+}
+
+.snackbar-error button::before{
+  background-color: #e44648 !important;
+  color:white !important;
+  font-size: 22px;
+  font-family: "Material Icons";
+  content: "\e5cd";
+}

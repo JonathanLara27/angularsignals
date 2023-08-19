@@ -14,6 +14,11 @@ import { LazyImageComponent } from 'src/app/shared/components/lazy-image/lazy-im
 })
 export class CardItemComponent {
   @Input() public character!: Character;
+  public classbyStatus: any = {
+    Alive: 'bg-success',
+    Dead: 'bg-danger',
+    unknown: 'bg-warning'
+  }
   ngOnInit(): void {
     if (!this.character) throw new Error('La propiedad character es requerida.');
   }

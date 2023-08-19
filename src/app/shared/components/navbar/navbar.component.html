@@ -1,14 +1,16 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-      <span class="navbar-brand" >Signals</span>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
+  <div class="container-fluid">
+    <span class="navbar-brand" >Signals</span>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-            <a class="nav-link" [routerLink]="'./productSignal'" [routerLinkActive]="'active'">Product signals</a>
-            <a class="nav-link" [routerLink]="'./rickmorty'" [routerLinkActive]="'active'">Rick y morty</a>
-          </div>
+          <a class="nav-link" [routerLink]="'./productSignal'" [routerLinkActive]="'active'">Product signals</a>
+          <a class="nav-link" [routerLink]="'./rickmorty/characters'" [routerLinkActive]="'active'">Rick y morty</a>
+          <a class="nav-link" [routerLink]="'./rickmorty/characters-table'" [routerLinkActive]="'active'">Rick y morty table</a>
+        </div>
       </div>
     </div>
-</nav>
+  </nav>
+  <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>

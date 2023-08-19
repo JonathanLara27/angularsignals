@@ -9,6 +9,9 @@ const routes: Routes = [
         path: 'characters', loadComponent: ()=> import('./pages/characters/characters.component').then(m => m.CharactersComponent)
       },
       {
+        path: 'characters-table', loadComponent: ()=> import('./pages/characters-table/characters-table.component').then(m => m.CharactersTableComponent)
+      },
+      {
         path: '**', redirectTo: 'characters'
       }
     ]

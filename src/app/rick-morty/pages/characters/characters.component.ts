@@ -6,6 +6,8 @@ import { CharactersService } from '../../services/characters.service';
 import { MatIconModule } from '@angular/material/icon';
 import { CardListComponent } from './components/card-list/card-list.component';
 import { SnackbarService } from 'src/app/shared/services/snackbar.service';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { GlobalInterceptor } from '../../services/global.interceptor';
 
 
 @Component({
@@ -15,6 +17,10 @@ import { SnackbarService } from 'src/app/shared/services/snackbar.service';
     MatIconModule,
     MatPaginatorModule,
     CardListComponent,
+  ],
+  providers:[
+    CharactersService,
+    {provide: HTTP_INTERCEPTORS, useClass: GlobalInterceptor, multi: true}
   ]
 })
 export class CharactersComponent implements OnInit {

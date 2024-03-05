@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { Product } from '../../interfaces/product.interface';
 import {MatListModule} from '@angular/material/list';
 import {MatIconModule} from '@angular/material/icon';
@@ -10,11 +10,17 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SnackbarService } from 'src/app/shared/services/snackbar.service';
+import { ModalOptions } from 'src/app/shared/interfaces/modalOptions.interface';
+import { openModal } from 'src/app/shared/functions/OpenModal.function';
+import { ModalCreateProductComponent } from 'src/app/shared/components/modal-create-product/modal-create-product.component';
+import { MatDialog } from '@angular/material/dialog';
+import { ModalConfirmacionComponent } from 'src/app/shared/components/modal-confirmacion/modal-confirmacion.component';
+import { productInitial } from 'src/app/shared/constants';
+import { TitleComponent } from 'src/app/shared/components/title/title.component';
 
 
 
 @Component({
-  selector: 'products-product-page',
   templateUrl: './product.component.html',
   standalone: true,
   imports: [
@@ -26,89 +32,82 @@ import { SnackbarService } from 'src/app/shared/services/snackbar.service';
     MatInputModule,
     MatFormFieldModule,
     FormsModule,
-    MatTooltipModule
+    MatTooltipModule,
+
+    TitleComponent,
   ],
+  providers: [SnackbarService],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProductComponent {
 
+  constructor(
+    private dialog: MatDialog,
+    private _snackBarService: SnackbarService
+    ) {}
 
-  private _snackBarService = inject(SnackbarService)
+  public products = signal<Product[]>(productInitial)
 
-  public products = signal<Product[]>([
-    {
-      name: 'Teclado gamer',
-      price: 100,
-      readonly: true,
-      edit: true,
-    },
-    {
-      name: 'Mouse gamer',
-      price: 50,
-      readonly: true,
-      edit: true,
-    },
-    {
-      name: 'Monitor gamer',
-      price: 200,
-      readonly: true,
-      edit: true,
-    },
-    {
-      name: 'Audifonos gamer',
-      price: 150,
-      readonly: true,
-      edit: true,
+  private createProduct(product: Product) {
+    this.products.set([...this.products(), product]);
+    this._snackBarService.showSuccess(`Producto ${product.name} creado exitosamente.`);
+  }
+
+  private deleteProduct(product: Product){
+    this.products.set(this.products().filter(p => p !== product));
+    this._snackBarService.showSuccess(`Producto ${product.name} eliminado exitosamente.`);
+  }
+  private editProduct(product: Product, result: Product) {
+    this._snackBarService.showSuccess(`Producto ${product.name} editado exitosamente.`);
+    this.products.set(this.products().map(p => p.id === result.id ? result : p));
+  }
+
+ public openModalCreateProduct(): void {
+    const options: ModalOptions = {
+      data: {
+        title: 'Crear producto',
+        length: this.products().length
+      },
+      width: '800px',
     }
-  ])
-
-  private temporalProduct!: Product;
-  
-  public addProducts(){
-    this.products.set([...this.products(), {name: 'New Product', price: 0, readonly: true, edit: true,}]);
-    this._snackBarService.showSuccess('Producto agregado existosamente.');
-  }
-  public deleteProduct(index: number) {
-    this.products().splice(index,1)
-    this._snackBarService.showSuccess('Producto eliminado existosamente.');
+    const dialogRef = openModal(this.dialog, ModalCreateProductComponent, options);
+    dialogRef.afterClosed().subscribe((result: Product | null) => {
+      if (!result) return;
+      this.createProduct(result);
+    });
   }
 
-  public changeToEdit(product: Product, index: number){
-    this.temporalProduct={...product};
-    this.products()[index].readonly=!this.products()[index].readonly;
-    this.products.mutate( product =>product[0].edit=true);
-  }
-
-  public cancelEdition(index: number){
-    this.products.mutate( product => {
-      product[index]=this.temporalProduct;
-      product[index].readonly=true;
-    })
-    this.setEditProducts();
-  }
-
-  public saveEdition(index: number) {
-    const product = this.products()[index];
-    product.readonly = !product.readonly;
-    if (product.name.length <= 3) {
-      this._snackBarService.showError('Asigna un nombre con más de 3 caracteres.');
-      this.products.mutate( product =>product[index]=this.temporalProduct);
-    } else if (product.price <= 0) {
-      this._snackBarService.showError('Asigna un precio mayor a 0.');
-      this.products()[index] = this.temporalProduct;
-    } else {
-      this._snackBarService.showSuccess('Producto editado correctamente.');
+ public openModalEditProduct(product: Product){
+    const options: ModalOptions = {
+      data: {
+        title: 'Editar producto',
+        product,
+        length: this.products().length
+      },
+      width: '800px',
     }
-  
-    this.setEditProducts();
+    const dialogRef = openModal(this.dialog, ModalCreateProductComponent, options);
+    dialogRef.afterClosed().subscribe((result: Product | null) => {
+      if (!result) return;
+      this.editProduct(product,result);
+    });
   }
-  
 
-  private setEditProducts(){
-    this.products.update(products => products.map((product) => {
-      product.edit=true;
-      return product;
-    }));
+ public openModalConfirmacionDelete(product: Product){
+    const options: ModalOptions = {
+      data: {
+        title: 'Eliminar producto',
+        message: `¿Estás seguro de que quieres eliminar el producto "${product.name}" ?`
+      },
+      width: '400px',
+    }
+    const dialogRef = openModal(this.dialog, ModalConfirmacionComponent, options);
+    dialogRef.afterClosed().subscribe((result: boolean | null) => {
+      if (!result) return;
+      this.deleteProduct(product);
+    });
   }
+  
 }
 
 

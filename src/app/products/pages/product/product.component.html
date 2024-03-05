@@ -1,42 +1,27 @@
-<div class="shadow my-3 rounded text-center bg-dark text-white">
-  <h1 class="py-3">PRODUCTOS</h1>
-</div>
+<app-title [title]="'PRODUCTOS'"></app-title>
 <mat-list>
-  <div *ngFor="let product of products(); let i=index" >
-    <mat-list-item>
-      <mat-icon matListItemIcon>shopping_cart</mat-icon>
-      <div matListItemTitle *ngIf="product.readonly">{{product.name}}</div>
-      <div *ngIf="product.readonly" matListItemLine>{{product.price | currency:'S/. ':'code' }}</div>
-      <div matListItemMeta>
-        <button mat-icon-button matTooltip="Editar producto" matTooltipPosition="left" *ngIf="product.readonly && product.edit" (click)="changeToEdit(product, i)">
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button mat-icon-button matTooltip="Eliminar producto" (click)="deleteProduct(i)" *ngIf="product.readonly">
-          <mat-icon>remove_shopping_cart</mat-icon>
-        </button>
-        <button mat-icon-button matTooltip="Guardar cambios" *ngIf="!product.readonly" (click)="saveEdition(i)">
-          <mat-icon>save</mat-icon>
-        </button>
-        <button mat-icon-button matTooltip="Cancelar edición" *ngIf="!product.readonly" (click)="cancelEdition(i)">
-          <mat-icon>cancel</mat-icon>
-        </button>
-      </div>
-    </mat-list-item>
-    <div *ngIf="!product.readonly" class="row">
-      <mat-form-field  class="col-12 col-md-6">
-        <mat-label>Producto</mat-label>
-        <input matInput [(ngModel)]="product.name" placeholder="Nombre del producto">
-      </mat-form-field>
-      <mat-form-field class="col-12 col-md-6">
-        <mat-label>Precio</mat-label>
-        <input matInput type="number" [(ngModel)]="product.price" placeholder="Precio del producto">
-      </mat-form-field>
+  @for (product of products(); track $index) {
+  <mat-list-item>
+    <mat-icon matListItemIcon>shopping_cart</mat-icon>
+    <div matListItemTitle>{{product.name}}</div>
+    <div matListItemLine>
+      {{product.price | currency:'S/. ':'code' }}
     </div>
-  </div>
+    <div matListItemMeta>
+      <button mat-icon-button matTooltip="Editar producto" matTooltipPosition="left"
+        (click)="openModalEditProduct(product)">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button matTooltip="Eliminar producto" (click)="openModalConfirmacionDelete(product)">
+        <mat-icon>remove_shopping_cart</mat-icon>
+      </button>
+    </div>
+  </mat-list-item>
+  }
 </mat-list>
 <mat-divider></mat-divider>
 <div class="text-center mt-3">
-  <button mat-raised-button (click)="addProducts()">
+  <button mat-raised-button (click)="openModalCreateProduct()">
     <mat-icon>add_shopping_cart</mat-icon>
     <span>Add Product</span>
   </button>

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, ViewChild, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 
@@ -10,9 +10,10 @@ import { TableColumn } from 'src/app/shared/interfaces/table-colums.interface';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { GlobalInterceptor } from '../../services/global.interceptor';
-import { Subscription } from 'rxjs';
+import { Subscription, timer } from 'rxjs';
 import { LoadingService } from '../../services/loading-http.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { LoadingSpinnerComponent } from 'src/app/shared/components/loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-characters-table',
@@ -20,16 +21,18 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   imports: [
     CommonModule,
     MatPaginatorModule,
+    MatProgressSpinnerModule,
 
     TableComponent,
-    MatProgressSpinnerModule,
+    LoadingSpinnerComponent,
   ],
   providers:[
     CharactersService,LoadingService,
     {provide: HTTP_INTERCEPTORS, useClass: GlobalInterceptor, multi: true}
   ],
   templateUrl: './characters-table.component.html',
-  styleUrls: ['./characters-table.component.css']
+  styleUrls: ['./characters-table.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CharactersTableComponent implements OnInit {
 
@@ -86,15 +89,9 @@ export class CharactersTableComponent implements OnInit {
     },
   ];
   
-  public isLoading: boolean=true;
 
   ngOnInit() {
     this.getAllCharactersPage(this.pageIndex);
-    this._loadingService.loading$.subscribe({
-      next: (loading: boolean) => {
-        this.isLoading = loading;
-      }
-    });
   }
 
   private getAllCharactersPage(page: number) {
@@ -108,6 +105,7 @@ export class CharactersTableComponent implements OnInit {
   }
 
   public onPageChange(event: any): void {
+    this.characters.set([]);
     this.currentPage = event.pageIndex + 1;
     this.getAllCharactersPage(this.currentPage);
   }

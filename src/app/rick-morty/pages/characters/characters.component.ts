@@ -8,6 +8,7 @@ import { CardListComponent } from './components/card-list/card-list.component';
 import { SnackbarService } from 'src/app/shared/services/snackbar.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { GlobalInterceptor } from '../../services/global.interceptor';
+import { timer } from 'rxjs';
 
 
 @Component({
@@ -26,6 +27,7 @@ import { GlobalInterceptor } from '../../services/global.interceptor';
 export class CharactersComponent implements OnInit {
 
   public characters = signal<Character[]>([]);
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   private _characterService = inject(CharactersService);
   private _snackBarService = inject(SnackbarService);
@@ -43,7 +45,9 @@ export class CharactersComponent implements OnInit {
         this.characters.set(response.results)
         this.paginator.length = response.info.count;
       },
-      error: (message) => console.log(message)
+      error: (message) => {
+        this._snackBarService.showError(message);
+      }
     })
   }
 
@@ -54,9 +58,12 @@ export class CharactersComponent implements OnInit {
         this.paginator.length = response.info.count;
         this._snackBarService.showSuccess(`${response.info.count} resultados encontrados para: ${name}`);
       },
-      error: (message) => this._snackBarService.showError(message)
+      error: (message) => {
+        this._snackBarService.showError(message);
+      }
     })
   }
+
 
   public onInput(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

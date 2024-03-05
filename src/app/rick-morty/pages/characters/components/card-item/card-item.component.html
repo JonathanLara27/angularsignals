@@ -4,25 +4,17 @@
         <div class="card-title d-flex justify-content-between align-items-start">
             <div class="ms-2 me-auto">
                 <div class="fw-bold">
-                    {{character.name || 'No title'}}
+                    {{character.name || 'Sin nombre'}}
                 </div>
             </div>
             <span [ngClass]="[classbyStatus[character.status], 'p-2', 'border', 'border-light', 'rounded-circle']">
             </span>
         </div>
         <section class="ms-2">
-            <p>
-                <b>Especie:</b> {{character.species}}
-            </p>
-            <p>
-                <b>Tipo:</b> {{character.type || 'Sin registro'}}
-            </p>
-            <p>
-                <b>Género:</b> {{character.gender}}
-            </p>
-            <p>
-                <b>Creado:</b> {{character.created | date: 'dd-MM-yyyy'}}
-            </p>
+            <p><b>Especie:</b> {{character.species}}</p>
+            <p><b>Tipo:</b> {{character.type || 'Sin registro'}}</p>
+            <p><b>Género:</b> {{character.gender}}</p>
+            <p><b>Creado:</b> {{character.created | date: 'dd-MM-yyyy'}}</p>
         </section>
     </div>
 </div>

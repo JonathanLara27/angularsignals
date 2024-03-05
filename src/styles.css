@@ -3,6 +3,7 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
+
 .container {
     width: 100%;
     padding-right: 15px;
@@ -67,4 +68,15 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   font-size: 22px;
   font-family: "Material Icons";
   content: "\e5cd";
+}
+
+
+.fl-text-bg-secondary {
+  background-color: #e44648 !important;
+  color: white !important;
+}
+
+.fl-modal-header {
+  height: 50px;
+  font-size: 25px;
 }

@@ -1,4 +1,13 @@
 <div class="d-flex justify-content-center">
-    <img (load)="onLoad()" [src]="url" [alt]="alt" class="card-img-top animate__animated animate__fadeIn" [ngStyle]="{ display: hasLoaded ? '' : 'none'}">
-    <img *ngIf="!hasLoaded" class="mt-3" src="../../../../assets/loader.svg" alt="">
+    @defer (on timer(1000)) {
+        <img [src]="url" [alt]="alt" 
+        class="card-img-top animate__animated animate__fadeIn"
+        >
+    }@placeholder {
+        <img class="mt-3" src="../../../../assets/loader.svg" alt="">
+    }
+    <!-- <img (load)="onLoad()" [src]="url" [alt]="alt" class="card-img-top animate__animated animate__fadeIn" [ngStyle]="{ display: hasLoaded ? '' : 'none'}">
+    @if(!hasLoaded){
+        <img class="mt-3" src="../../../../assets/loader.svg" alt="">
+    } -->
 </div>

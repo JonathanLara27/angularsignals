@@ -1,0 +1,36 @@
+<section class="d-flex align-items-center shadow mb-5 bg-dark text-white sticky-top">
+    <h2 class="d-flex justify-content-center align-items-center flex-grow-1 my-1">{{data.title}}</h2>
+    <button mat-icon-button (click)="closeModal()">
+        <mat-icon>close</mat-icon>
+    </button>
+</section>
+
+<section>
+    <form [formGroup]="formGroupProduct" class="row justify-content-center mx-2">
+        <div class="col-12">
+            <mat-form-field class="w-100 mb-2">
+                <mat-label>Nombre</mat-label>
+                <input matInput formControlName="name" placeholder="Ingresa el nombre" required >
+                @if(isValidField('name',formGroupProduct)){
+                <mat-error>
+                    {{getFieldErrors('name',formGroupProduct)}}
+                </mat-error>
+                }
+            </mat-form-field>
+            <mat-form-field class="w-100 mb-2">
+                <mat-label>Precio</mat-label>
+                <input matInput formControlName="price" placeholder="Ingresa el precio" required type="number" min="1" (keyup.enter)="saveProduct()">
+                @if(isValidField('price',formGroupProduct)){
+                <mat-error>
+                    {{getFieldErrors('price',formGroupProduct)}}
+                </mat-error>
+                }
+            </mat-form-field>
+        </div>
+    </form>
+    <!-- boton para guardar -->
+    <div class="d-flex justify-content-center my-2">
+        <button mat-raised-button class="fl-button-primary" (click)="saveProduct()"
+            [disabled]="formGroupProduct.invalid" [ngClass]="{'color-gris': formGroupProduct.invalid}">Guardar</button>
+    </div>
+</section>

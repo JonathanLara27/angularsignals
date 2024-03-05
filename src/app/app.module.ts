@@ -11,12 +11,15 @@ import { Internationalization } from './shared/functions/optionsPaginator';
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from '@angular/material/snack-bar';
 import { GlobalInterceptor } from './rick-morty/services/global.interceptor';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 
 const snackBarConfig = {
   horizontalPosition: 'center',
   verticalPosition: 'top',
 };
-
+const formFieldAppearance = {
+  appearance: 'outline',
+};
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,6 +39,7 @@ const snackBarConfig = {
     { provide: MatPaginatorIntl, useClass: Internationalization },
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: snackBarConfig },
     { provide: HTTP_INTERCEPTORS, useClass: GlobalInterceptor, multi: true },
+    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: formFieldAppearance },
   ],
   bootstrap: [AppComponent]
 })

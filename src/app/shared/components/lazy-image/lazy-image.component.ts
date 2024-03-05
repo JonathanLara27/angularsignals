@@ -8,19 +8,9 @@ import { timer } from 'rxjs';
   standalone: true,
   imports: [
     CommonModule,
-    // NgOptimizedImage
   ],
 })
 export class LazyImageComponent {
-  @Input() public url!: string;
+  @Input({required: true}) public url!: string;
   @Input() public alt: string = '';
-  public hasLoaded: boolean = false;
-
-  ngOnInit(): void {
-    if (!this.url) throw new Error('URL es requerida.');
-  }
-
-  onLoad(): void {
-    timer(1000).subscribe(() => this.hasLoaded = true);
-  }
 }

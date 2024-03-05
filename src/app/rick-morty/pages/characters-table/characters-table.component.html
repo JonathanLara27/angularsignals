@@ -1,20 +1,18 @@
+<div class="shadow my-3 rounded text-center bg-dark text-white">
+    <h1 class="py-3">TABLA DE PERSONAJES</h1>
+</div>
 
-<ng-container *ngIf="isLoading; then cargando else tabledata"></ng-container>
-
-<ng-template #cargando>
-    awdadsd
-    <div class="container my-2 example-loading-shade">
-        <mat-spinner></mat-spinner>
-    </div>
-</ng-template>
-
-<ng-template #tabledata>
+<div #tabledata>
     <div class="my-3 border-radius10" style="background-color: #e6e6e6;">
         <shared-table class="ms-1" [data]="characters()" [columns]="columns"></shared-table>
         <div class="d-flex justify-content-end">
-            <mat-paginator class="border-radius10 border my-2" [pageSize]="20" [hidePageSize]="true"  showFirstLastButtons showFirstLastButtons (page)="onPageChange($event)">
+            <mat-paginator class="border-radius10 border my-2" [pageSize]="20" [hidePageSize]="true"
+                (page)="onPageChange($event)">
             </mat-paginator>
         </div>
     </div>
-</ng-template>
+</div>
+
+
+
 

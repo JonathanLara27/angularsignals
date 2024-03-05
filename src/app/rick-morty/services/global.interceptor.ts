@@ -13,14 +13,11 @@ export class GlobalInterceptor implements HttpInterceptor {
 
   private _loadingService = inject(LoadingService);
 
-  constructor() {}
-
-
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    this._loadingService.setLoading(true);
+    this._loadingService.setLoadingSignal(true);
     return next.handle(request).pipe(
       finalize(() => {
-        this._loadingService.setLoading(false);
+        this._loadingService.setLoadingSignal(false);
       })
     );
   }
